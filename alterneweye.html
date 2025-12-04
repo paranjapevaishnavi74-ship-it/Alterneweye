@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Alter Eye – Animal Vision Simulator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #020024, #090979, #00d4ff);
+      font-family: "Poppins", Arial, sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    /* HEADER */
+    header {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px gold;
+    }
+
+    /* SELECT DROPDOWN */
+    select {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid gold;
+      padding: 12px 20px;
+      border-radius: 12px;
+      color: gold;
+      font-size: 16px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    select:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* CAMERA */
+    #camera {
+      margin-top: 20px;
+      width: 80%;
+      border-radius: 20px;
+      border: 3px solid gold;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    /* BUTTON PANEL */
+    .panel {
+      margin: 20px auto;
+      max-width: 900px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* BUTTONS */
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ffdd00, #ffb300);
+      color: black;
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(255, 223, 0, 0.7);
+      transition: 0.25s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px gold;
+    }
+
+    /* OUTPUT BOX */
+    #output {
+      margin: 20px auto;
+      max-width: 850px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border-left: 5px solid gold;
+      border-radius: 15px;
+      font-size: 18px;
+      min-height: 80px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+      backdrop-filter: blur(10px);
+      text-shadow: 0 0 5px black;
+    }
+
+    /* SPLASH SCREEN */
+    #splash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      color: gold;
+      font-size: 32px;
+      letter-spacing: 2px;
+      transition: opacity 1.2s ease-out;
+    }
+
+    #splash img {
+      width: 150px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px gold;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div id="splash">
+  <img src="file:///C:/Users/Admin/Desktop/pngtree-cute-yellow-bee-cartoon-illustration-png-image_6653635.png">
+  <h1>ALTER EYE</h1>
+  <p style="font-size:18px;">See the world like animals do</p>
+</div>
+
+<header>🐾 ALTER EYE – Animal Vision Simulator 🐾</header>
+
+<select id="animal">
+  <option value="none">Select an Animal Vision</option>
+  <option value="dog">Dog</option>
+  <option value="ant">Ant</option>
+  <option value="elephant">Elephant</option>
+  <option value="snake">Snake</option>
+  <option value="owl">Owl</option>
+  <option value="sparrow">Sparrow</option>
+  <option value="cat">Cat</option>
+  <option value="peacock">Peacock</option>
+  <option value="bee">Bee</option>
+</select>
+
+<div class="panel">
+  <button onclick="dogInfo()">Dog Info</button>
+  <button onclick="antInfo()">Ant Info</button>
+  <button onclick="elephantInfo()">Elephant Info</button>
+  <button onclick="snakeInfo()">Snake Info</button>
+  <button onclick="owlInfo()">Owl Info</button>
+  <button onclick="sparrowInfo()">Sparrow Info</button>
+  <button onclick="catInfo()">Cat Info</button>
+  <button onclick="peacockInfo()">Peacock Info</button>
+  <button onclick="beeInfo()">Bee Info</button>
+</div>
+
+<div id="output">Animal information will appear here...</div>
+
+<video id="camera" autoplay></video>
+
+<script>
+
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById("splash").style.opacity = "0";
+    setTimeout(() => {
+      document.getElementById("splash").style.display = "none";
+    }, 1200);
+  }, 2000);
+};
+
+const vid = document.getElementById("camera");
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => vid.srcObject = stream);
+
+document.getElementById("animal").addEventListener("change", function() {
+  const v = this.value;
+  const cam = document.getElementById("camera");
+
+  const filters = {
+    dog: "grayscale(60%) blur(1px)",
+    ant: "grayscale(40%) brightness(130%)",
+    elephant: "grayscale(60%) contrast(120%)",
+    snake: "hue-rotate(90deg) contrast(200%)",
+    owl: "brightness(200%) grayscale(80%)",
+    sparrow: "saturate(150%) contrast(120%)",
+    cat: "brightness(130%) contrast(120%)",
+    peacock: "saturate(200%) hue-rotate(40deg)",
+    bee: "hue-rotate(-40deg) saturate(160%)",
+    none: "none"
+  };
+
+  cam.style.filter = filters[v];
+});
+
+function speak(text) {
+  const out = document.getElementById("output");
+  out.innerHTML = text;
+
+  let msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "en-IN";
+  speechSynthesis.speak(msg);
+}
+
+function dogInfo() { speak("Dogs see mostly blue and yellow."); }
+function antInfo() { speak("Ants sense the world through smell and UV vision."); }
+function elephantInfo() { speak("Elephants rely heavily on sound and vibration."); }
+function snakeInfo() { speak("Snakes use heat vision to detect warm bodies."); }
+function owlInfo() { speak("Owls see extremely well at night and have sharp hearing."); }
+function sparrowInfo() { speak("Sparrows see ultraviolet colors that humans cannot."); }
+function catInfo() { speak("Cats see clearly in low light and detect fast movements."); }
+function peacockInfo() { speak("Peacocks see bright UV reflections in feathers."); }
+function beeInfo() { speak("Bees see blue, yellow, and ultraviolet patterns."); }
+
+</script>
+
+</body>
+</html>
